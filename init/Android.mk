@@ -47,6 +47,38 @@ LOCAL_STATIC_LIBRARIES := \
     libelf \
     libz
 
+ifneq ($(filter tianchi togari amami honami sirius aries leo castor castor_windy scorpion scorpion_windy,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="16"
+endif
+
+ifneq ($(filter flamingo,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="18"
+endif
+
+ifneq ($(filter seagull tulip,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="21"
+endif
+
+ifneq ($(filter eagle,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="22"
+endif
+
+ifneq ($(filter ivy suzuran sumire satsuki karin karin_windy,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="32"
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MAJOR="259"
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MINOR="0"
+endif
+
+# FOTA check is broken on 64bit devices
+ifneq ($(filter tulip ivy suzuran sumire satsuki karin karin_windy,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DFOTA_RAMDISK_CHECK="0"
+endif
+
+# Disable keycheck on devices that don't need it
+ifneq ($(filter flamingo eagle seagull tianchi togari amami honami sirius aries leo,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DKEYCHECK_ENABLED="0"
+endif
+
 LOCAL_CLANG := true
 
 include $(BUILD_EXECUTABLE)

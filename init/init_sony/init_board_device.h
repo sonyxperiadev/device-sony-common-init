@@ -20,9 +20,42 @@
 #include "init_board_common.h"
 #include "init_prototypes.h"
 
+#define LED_RED_PATH "/sys/class/leds/led:rgb_red/brightness"
+#define LED_GREEN_PATH "/sys/class/leds/led:rgb_green/brightness"
+#define LED_BLUE_PATH "/sys/class/leds/led:rgb_blue/brightness"
+
 // Class: init_board_device
 class init_board_device : public init_board_common
 {
+public:
+    // Board: Introduction for Keycheck
+    virtual void introduce_keycheck()
+    {
+        // LED purple
+        led_color(255, 0, 255);
+    }
+
+    // Board: Introduction for Android
+    virtual void introduce_android()
+    {
+        // LED off
+        led_color(0, 0, 0);
+    }
+
+    // Board: Introduction for Recovery
+    virtual void introduce_recovery()
+    {
+        // LED orange
+        led_color(255, 100, 0);
+    }
+
+    // Board: Set LED colors
+    void led_color(uint8_t red, uint8_t green, uint8_t blue)
+    {
+        write_int(LED_RED_PATH, red);
+        write_int(LED_GREEN_PATH, green);
+        write_int(LED_BLUE_PATH, blue);
+    }
 };
 
 #endif //__INIT_BOARD_DEVICE_H__
