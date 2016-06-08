@@ -63,14 +63,14 @@ ifneq ($(filter eagle,$(TARGET_DEVICE)),)
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="22"
 endif
 
-ifneq ($(filter ivy suzuran sumire satsuki karin karin_windy,$(TARGET_DEVICE)),)
+ifneq ($(filter ivy suzu suzuran sumire satsuki karin karin_windy,$(TARGET_DEVICE)),)
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="32"
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MAJOR="259"
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MINOR="0"
 endif
 
 # FOTA check is broken on 64bit devices
-ifneq ($(filter tulip ivy suzuran sumire satsuki karin karin_windy,$(TARGET_DEVICE)),)
+ifneq ($(filter tulip ivy suzu suzuran sumire satsuki karin karin_windy,$(TARGET_DEVICE)),)
 LOCAL_CFLAGS += -DFOTA_RAMDISK_CHECK="0"
 endif
 
