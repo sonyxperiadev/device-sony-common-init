@@ -69,10 +69,8 @@ LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MAJOR="259"
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MINOR="0"
 endif
 
-# FOTA check is broken on 64bit devices
-ifneq ($(filter tulip ivy suzu suzuran sumire satsuki karin karin_windy,$(TARGET_DEVICE)),)
+# FOTA check is broken on all devices
 LOCAL_CFLAGS += -DFOTA_RAMDISK_CHECK="0"
-endif
 
 # Disable keycheck on devices that don't need it
 ifneq ($(filter flamingo eagle seagull tianchi togari amami honami sirius aries leo,$(TARGET_DEVICE)),)
