@@ -72,10 +72,8 @@ endif
 # FOTA check is broken on all devices
 LOCAL_CFLAGS += -DFOTA_RAMDISK_CHECK="0"
 
-# Disable keycheck on devices that don't need it
-ifneq ($(filter flamingo eagle seagull tianchi togari amami honami sirius aries leo,$(TARGET_DEVICE)),)
-LOCAL_CFLAGS += -DKEYCHECK_ENABLED="0"
-endif
+# Ensure keycheck is used on all devices on AOSP
+LOCAL_CFLAGS += -DKEYCHECK_ENABLED="1"
 
 LOCAL_CLANG := true
 
