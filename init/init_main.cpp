@@ -118,7 +118,7 @@ int main(int argc, char** __attribute__((unused)) argv)
         }
 
         // FOTA Recovery importation
-        if (DEV_BLOCK_FOTA_MAJOR != -1 &&
+        if (DEV_BLOCK_FOTA_MINOR != -1 &&
                 keycheckStatus != KEYCHECK_RECOVERY_BOOT_ONLY)
         {
             write_string(BOOT_TXT, "RECOVERY FOTA " DEV_BLOCK_FOTA_PATH, true);
