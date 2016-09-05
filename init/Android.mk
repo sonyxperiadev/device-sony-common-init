@@ -93,6 +93,9 @@ LOCAL_CFLAGS += -DFOTA_RAMDISK_CHECK="0"
 # Ensure keycheck is used on all devices on AOSP
 LOCAL_CFLAGS += -DKEYCHECK_ENABLED="1"
 
+# Only use Volume+ on all devices on AOSP
+LOCAL_CFLAGS += -DKEYCHECK_NO_DOWN="1"
+
 LOCAL_CLANG := true
 
 include $(BUILD_EXECUTABLE)
