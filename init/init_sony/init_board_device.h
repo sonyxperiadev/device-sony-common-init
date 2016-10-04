@@ -35,8 +35,8 @@ public:
         // Short vibration
         vibrate(75);
 
-        // LED boot selection colors
-        led_color(0, 225, 0);
+        // LED purple
+        led_color(255, 0, 255);
     }
 
     // Board: finalization of keycheck
@@ -53,15 +53,15 @@ public:
     // Board: Introduction for Android
     virtual void introduce_android()
     {
-        // Power off LED
+        // LED off
         led_color(0, 0, 0);
     }
 
     // Board: Introduction for Recovery
     virtual void introduce_recovery()
     {
-        // LED Recovery colors
-        led_color(0, 0, 255);
+        // LED orange
+        led_color(255, 100, 0);
     }
 
     // Board: Finish init execution
