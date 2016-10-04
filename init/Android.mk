@@ -47,38 +47,73 @@ LOCAL_STATIC_LIBRARIES := \
     libelf \
     libz
 
-ifneq ($(filter tianchi togari amami honami sirius aries leo castor castor_windy scorpion scorpion_windy,$(TARGET_DEVICE)),)
-LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="16"
-endif
+# Flag: FOTA number set
+fota_num_set := false
 
-ifneq ($(filter flamingo,$(TARGET_DEVICE)),)
-LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="18"
-endif
-
-ifneq ($(filter seagull tulip,$(TARGET_DEVICE)),)
-LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="21"
-endif
-
+# Board: yukon
+ifneq ($(filter yukon,$(PRODUCT_PLATFORM)),)
 ifneq ($(filter eagle,$(TARGET_DEVICE)),)
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="22"
+fota_num_set := true
+endif
+ifneq ($(filter flamingo,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="18"
+fota_num_set := true
+endif
+ifneq ($(filter seagull,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="21"
+fota_num_set := true
+endif
+ifneq ($(filter tianchi,$(TARGET_DEVICE)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="16"
+fota_num_set := true
+endif
 endif
 
-ifneq ($(filter ivy suzuran sumire satsuki karin karin_windy,$(TARGET_DEVICE)),)
+# Board: rhine
+ifneq ($(filter rhine,$(PRODUCT_PLATFORM)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="16"
+fota_num_set := true
+endif
+
+# Board: shinano
+ifneq ($(filter shinano,$(PRODUCT_PLATFORM)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="16"
+fota_num_set := true
+endif
+
+# Board: kanuti
+ifneq ($(filter kanuti,$(PRODUCT_PLATFORM)),)
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="21"
+fota_num_set := true
+endif
+
+# Board: kitakami
+ifneq ($(filter kitakami,$(PRODUCT_PLATFORM)),)
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="32"
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MAJOR="259"
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MINOR="0"
+fota_num_set := true
 endif
 
-ifneq ($(filter suzu,$(TARGET_DEVICE)),)
-LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="42"
-LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MAJOR="259"
-LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MINOR="10"
-endif
-
+# Board: loire
+ifneq ($(filter loire,$(PRODUCT_PLATFORM)),)
 ifneq ($(filter kugo,$(TARGET_DEVICE)),)
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="46"
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MAJOR="259"
 LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MINOR="14"
+fota_num_set := true
+else
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_NUM="42"
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MAJOR="259"
+LOCAL_CFLAGS += -DDEV_BLOCK_FOTA_MINOR="10"
+fota_num_set := true
+endif
+endif
+
+# Abort if the device is not handled
+ifneq ($(fota_num_set),true)
+$(error device-sony-common-init: DEV_BLOCK_FOTA_NUM missing for "$(TARGET_DEVICE)", platform "$(PRODUCT_PLATFORM)")
 endif
 
 # FOTA check is broken on all devices
@@ -86,6 +121,9 @@ LOCAL_CFLAGS += -DFOTA_RAMDISK_CHECK="0"
 
 # Ensure keycheck is used on all devices on AOSP
 LOCAL_CFLAGS += -DKEYCHECK_ENABLED="1"
+
+# Only use Volume+ on all devices on AOSP
+LOCAL_CFLAGS += -DKEYCHECK_NO_DOWN="1"
 
 LOCAL_CLANG := true
 
