@@ -26,6 +26,7 @@ void ramdisk_clean_files(void)
     unlink("/sbin/healthd");
     unlink("/sbin/ueventd");
     unlink("/sbin/watchdogd");
+    unlink("/cache");
     unlink("/charger");
     unlink("/default.prop");
     unlink("/file_contexts");
