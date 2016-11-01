@@ -116,6 +116,9 @@ ifneq ($(fota_num_set),true)
 $(error device-sony-common-init: DEV_BLOCK_FOTA_NUM missing for "$(TARGET_DEVICE)", platform "$(PRODUCT_PLATFORM)")
 endif
 
+# Debug current init_sony settings
+$(info device-sony-common-init: init_sony for "$(TARGET_DEVICE)", platform "$(PRODUCT_PLATFORM)", with $(LOCAL_CFLAGS))
+
 # FOTA check is broken on all devices
 LOCAL_CFLAGS += -DFOTA_RAMDISK_CHECK="0"
 
