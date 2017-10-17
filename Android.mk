@@ -1,4 +1,4 @@
-ifneq ($(filter yukon rhine shinano kanuti kitakami loire tone yoshino,$(PRODUCT_PLATFORM)),)
+ifeq ($(BOARD_USES_INIT_SONY),true)
 
 LOCAL_PATH := $(call my-dir)
 
