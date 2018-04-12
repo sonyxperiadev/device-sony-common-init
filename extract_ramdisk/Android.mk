@@ -1,7 +1,10 @@
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES := extract_ramdisk.cpp main.cpp
+LOCAL_SRC_FILES := uncompress.cpp \
+    extract_ramdisk.cpp \
+    main.cpp
+
 LOCAL_FORCE_STATIC_EXECUTABLE := true
 LOCAL_STATIC_LIBRARIES := libelf libc libm libz
 LOCAL_C_INCLUDES := \
