@@ -41,10 +41,12 @@
 #include "gelf.h"
 #include "bootimg.h"
 #include "zlib.h"
+#include <LzmaLib.h>
 
 #include "uncompress.h"
 
 #define MAX_DEBUG_HEX_OUTPUT 16
+#define LZMA_DATA_OFFSET 13
 
 // memcmp needs buffer, no way to use preprocessor var
 char gzip_header[] = { 0x1f, 0x8B };
@@ -77,6 +79,29 @@ size_t uncompress_gzip_memory(const byte_p compressed_data,
 	return(return_value);
 }
 
+size_t uncompress_lzma_memory(byte_p compressed_data,
+	size_t compressed_data_size, byte_p uncompressed_data,
+	size_t uncompressed_max_size) {
+	unsigned int propSize = 5;
+	Byte *prop = (Byte *)compressed_data;
+	Byte *compressed_data_start = (Byte *) compressed_data + LZMA_DATA_OFFSET;
+
+	int ret = LzmaUncompress((Byte *)uncompressed_data,
+		&uncompressed_max_size,
+		compressed_data_start,
+		&compressed_data_size,
+		prop,
+		propSize);
+
+	if (ret != SZ_OK) {
+        printf("Lzma uncompress error. Errno: 0x%x.\n", ret);
+		return -1;
+    }
+
+    // uncompressed_max_size is now the actual size of the uncompressed data.
+	return uncompressed_max_size;
+}
+
 size_t uncompress_memory(byte_p uncompressed_buffer, byte_p buffer, unsigned long file_size) {
 	if (uncompressed_buffer == NULL) {
 		free(buffer);
@@ -91,7 +116,8 @@ size_t uncompress_memory(byte_p uncompressed_buffer, byte_p buffer, unsigned lon
 			uncompressed_buffer, MEMORY_BUFFER_SIZE);
 	} else if (!memcmp(lzma_header, buffer, sizeof(lzma_header))) {
 		printf("LZMA ramdisk found\n");
-		return -255; //Unsupported yet
+		uncompressed_size = uncompress_lzma_memory(buffer, file_size,
+			uncompressed_buffer, MEMORY_BUFFER_SIZE);
 	} else {
 		char header[MAX_DEBUG_HEX_OUTPUT];
 		memcpy(header, buffer, sizeof((char*)16));
