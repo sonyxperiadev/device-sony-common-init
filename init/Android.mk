@@ -24,6 +24,7 @@ LOCAL_SRC_FILES := \
     init_io.cpp \
     init_main.cpp \
     init_ramdisk.cpp \
+    ../extract_ramdisk/uncompress.cpp \
     ../extract_ramdisk/extract_ramdisk.cpp
 
 LOCAL_C_INCLUDES := \
@@ -55,6 +56,7 @@ LOCAL_STATIC_LIBRARIES := \
     libbase \
     libc \
     libelf \
+    liblzma \
     libz
 
 LOCAL_CLANG := true
